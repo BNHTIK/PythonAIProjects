@@ -56,3 +56,23 @@ axs[1,1].grid(True)
 print(corr_matrix)
 plt.show()
 
+'''
+Завдання 2
+    Потрібно проаналізувати дані A/B-експерименту та візуалізувати конверсії.
+    Усе необхідно запрограмувати в Python з використанням pandas, NumPy і Matplotlib.
+        -Сформуйте таблицю з полями "group" (A або B) і "converted" (0/1) з не менш ніж 100 спостереженнями в кожній групі.
+        -Розрахуйте конверсію в групах, абсолютну різницю та відносну зміну.
+        -Побудуйте 95% довірчі інтервали для конверсії в кожній групі.
+        -Побудуйте стовпчасту діаграму конверсій груп із відображенням довірчих інтервалів.
+        -Виведіть усі розраховані значення та графік.
+'''
+
+experiment_data = {
+    "group": ['A' if y < 100 else 'B' for y in range(200)],
+    "converted": [rd.randint(0, 1) for i in range(200)]
+}
+
+experiment_df = pd.DataFrame(experiment_data)
+
+count = experiment_df.groupby('group').count().reset_index()
+print(count)
