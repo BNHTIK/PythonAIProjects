@@ -23,16 +23,36 @@ product_data = {
 
 product_df = pd.DataFrame(product_data)
 corr_matrix = product_df.corr()
-print(corr_matrix)
 
 date = product_df['date'].values
 users = product_df['users'].values
 sessions = product_df['sessions'].values
 revenue = product_df['revenue'].values
 
-plt.scatter(users, sessions, color="green", label='Correlation')
-plt.title('Users and Sessions Correlation')
-plt.legend()
-plt.grid(True)
+fig, axs = plt.subplots(2, 2, figsize=(9, 7))
+
+axs[0,0].scatter(users, sessions, color="green", label='Correlation')
+axs[0,0].set_title('Users and Sessions Correlation')
+axs[0,0].legend()
+axs[0,0].grid(True)
+
+axs[0,1].scatter(users, revenue, color="red", label='Correlation')
+axs[0,1].set_title('Users and Revenue Correlation')
+axs[0,1].legend()
+axs[0,1].grid(True)
+
+axs[1,0].scatter(revenue, sessions, color="blue", label='Correlation')
+axs[1,0].set_title('Revenue and Sessions Correlation')
+axs[1,0].legend()
+axs[1,0].grid(True)
+
+axs[1,1].plot(date, revenue, color="purple", label='Revenue Count')
+axs[1,1].set_title('Revenue Count by Day')
+axs[1,1].set_xlabel('Day')
+axs[1,1].set_ylabel('Revenue')
+axs[1,1].legend(loc='best')
+axs[1,1].grid(True)
+
+print(corr_matrix)
 plt.show()
 
