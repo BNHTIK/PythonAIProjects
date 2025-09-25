@@ -74,5 +74,10 @@ experiment_data = {
 
 experiment_df = pd.DataFrame(experiment_data)
 
-count = experiment_df.groupby('group').count().reset_index()
-print(count)
+count = experiment_df.groupby('group')['converted'].count().reset_index()
+conversion = experiment_df.groupby('group').count().reset_index()
+count_a = count[count['group'] == 'A'].values[0][1]
+count_b = count[count['group'] == 'B'].values[0][1]
+# conversion_a =   conversion[conversion['converted'] == 1].values[0][1] / count[count['group'] == 'A'].values[0][1]
+
+print(conversion)
