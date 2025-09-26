@@ -53,9 +53,11 @@ axs[1,1].set_ylabel('Revenue')
 axs[1,1].legend(loc='best')
 axs[1,1].grid(True)
 
-print('----First Task----')
 print(corr_matrix)
 plt.show()
+
+
+
 
 '''
 Завдання 2
@@ -101,7 +103,6 @@ errors = [
     [b_high - mean_b, abs(b_low - mean_b)]
 ]
 
-print('----Second Task----')
 print(conversion)
 print("Absolute difference:", abs_diff)
 print("Relative change:", rel_change)
@@ -113,4 +114,97 @@ plt.title('Experiment Group Conversion')
 plt.xlabel('Group')
 plt.ylabel('Conversion')
 plt.legend()
+plt.show()
+
+
+
+
+'''
+Завдання 3
+    Потрібно перевірити дію центральної граничної теореми на прикладі несиметричного розподілу.
+    Усе необхідно запрограмувати в Python з використанням pandas, NumPy і Matplotlib.
+        -Згенеруйте генеральну сукупність щонайменше з 50 000 спостережень із несиметричного розподілу.
+        -Сформуйте кілька підвибірок фіксованого розміру n і для кожної обчисліть середнє.
+        -Збережіть вибіркові середні та побудуйте їхню гістограму.
+        -Повторіть процедуру для щонайменше двох різних n і виведіть обидві гістограми.
+        -Виведіть середнє і стандартне відхилення вибіркових середніх для кожного n.
+'''
+
+asym = {
+    'asymmetry': np.random.exponential(scale=5.0, size=50000)
+}
+asym_df = pd.DataFrame(asym)
+
+def get_sample_means(arr, sample_size, samples_count):
+    for _ in range(samples_count):
+        sample = asym_df['asymmetry'].sample(sample_size, replace=True)
+        arr = np.append(arr, sample.mean())
+    return arr
+
+def get_hist(means_arr):
+    plt.hist(means_arr, bins=20, color='green', label='Sample Mean', edgecolor='lightgreen', linewidth=1)
+    plt.title('Examination Central Limit Theorem')
+    plt.xlabel('Mean')
+    plt.legend()
+    plt.show()
+
+num_samples = 100
+means = np.array([])
+
+for _ in range(3):
+    n = np.random.randint(200, 500)
+    means = get_sample_means(means, n, num_samples)
+    mean_val = means.mean()
+    std_val = means.std(ddof=1)
+
+    print(f"n={n}: Mean = {mean_val:.3f}, Standard Deviation = {std_val:.3f}")
+    get_hist(means)
+
+
+
+
+'''
+Завдання 4
+    Потрібно проаналізувати часовий ряд продажів і візуалізувати ковзаючі метрики.
+    Усе необхідно запрограмувати в Python з використанням pandas, NumPy і Matplotlib.
+        -Сформуйте таблицю "date" і "sales" за 90 днів.
+        -Додайте ковзне середнє і ковзне стандартне відхилення за обраним вікном.
+        -Побудуйте графік вихідних продажів і графік ковзного середнього на одному полі.
+        -Побудуйте окремий графік ковзного стандартного відхилення.
+        -Виведіть таблицю з першими рядками нових стовпців і обидва графіки.
+'''
+
+sales_data = {
+    'date': [day+1 for day in range(90)],
+    "sales": [rd.randint(0, 200) for i in range(90)]
+}
+
+sales_df = pd.DataFrame(sales_data)
+
+days = sales_df['date'].values
+sales = sales_df['sales'].values
+
+window = 5
+mean_rolling = sales_df['sales'].rolling(window).mean()
+std_rolling = sales_df['sales'].rolling(window).std()
+
+
+print(mean_rolling.head(10))
+print(std_rolling.head(10))
+
+plt.plot(days, sales, color='green', label='Sales by Day')
+plt.plot(days, mean_rolling, color='red', label='Mean Rolling Sales by Day')
+plt.title('Sales by Day Graphic')
+plt.xlabel('Days')
+plt.ylabel('Sales')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+plt.plot(days, std_rolling, color='blue', label='Standard Rolling Deviation Sales by Day')
+plt.title('Standard Rolling Deviation Graphic')
+plt.xlabel('Days')
+plt.ylabel('Devation')
+plt.legend()
+plt.grid(True)
 plt.show()
