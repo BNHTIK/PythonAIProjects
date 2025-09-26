@@ -73,11 +73,12 @@ experiment_data = {
 }
 
 experiment_df = pd.DataFrame(experiment_data)
+conversion = experiment_df.groupby('group')['converted'].agg(conversion='mean')
+abs_diff = abs(conversion.loc['A', 'conversion'] - conversion.loc['B', 'conversion'])
+rel_change = (conversion.loc['B', 'conversion'] - conversion.loc['A', 'conversion']) / conversion.loc['A', 'conversion']
 
-count = experiment_df.groupby('group')['converted'].count().reset_index()
-conversion = experiment_df.groupby('group').count().reset_index()
-count_a = count[count['group'] == 'A'].values[0][1]
-count_b = count[count['group'] == 'B'].values[0][1]
-# conversion_a =   conversion[conversion['converted'] == 1].values[0][1] / count[count['group'] == 'A'].values[0][1]
+# conf_low, conf_high
 
 print(conversion)
+print("Absolute difference:", abs_diff)
+print("Relative change:", rel_change)
