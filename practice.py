@@ -53,6 +53,7 @@ axs[1,1].set_ylabel('Revenue')
 axs[1,1].legend(loc='best')
 axs[1,1].grid(True)
 
+print('----First Task----')
 print(corr_matrix)
 plt.show()
 
@@ -74,11 +75,42 @@ experiment_data = {
 
 experiment_df = pd.DataFrame(experiment_data)
 conversion = experiment_df.groupby('group')['converted'].agg(conversion='mean')
-abs_diff = abs(conversion.loc['A', 'conversion'] - conversion.loc['B', 'conversion'])
+abs_diff = np.abs(conversion.loc['A', 'conversion'] - conversion.loc['B', 'conversion'])
 rel_change = (conversion.loc['B', 'conversion'] - conversion.loc['A', 'conversion']) / conversion.loc['A', 'conversion']
 
-# conf_low, conf_high
+t = 2.262
 
+values_a = experiment_df[experiment_df['group'] == 'A']['converted'].to_numpy()
+mean_a = np.mean(values_a)
+std_a = np.std(values_a, ddof=1)
+se_a = std_a / np.sqrt(len(values_a))
+a_low = mean_a - t * se_a
+a_high = mean_a + t * se_a
+
+values_b = experiment_df[experiment_df['group'] == 'B']['converted'].to_numpy()
+mean_b = np.mean(values_b)
+std_b = np.std(values_b, ddof=1)
+se_b = std_b / np.sqrt(len(values_b))
+b_low = mean_b - t * se_b
+b_high = mean_b + t * se_b
+
+groups = conversion.reset_index()['group'].tolist()
+values = conversion.reset_index()['conversion'].tolist()
+errors = [
+    [a_high - mean_a, abs(a_low - mean_a)],
+    [b_high - mean_b, abs(b_low - mean_b)]
+]
+
+print('----Second Task----')
 print(conversion)
 print("Absolute difference:", abs_diff)
 print("Relative change:", rel_change)
+print(f"Confidence interval A: [{a_low:.2f}, {a_high:.2f}]")
+print(f"Confidence interval B: [{b_low:.2f}, {b_high:.2f}]")
+
+plt.bar(groups, values, color='lightgreen', label='Group Conversion', yerr=errors, capsize=5)
+plt.title('Experiment Group Conversion')
+plt.xlabel('Group')
+plt.ylabel('Conversion')
+plt.legend()
+plt.show()
