@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.model_selection import train_test_split
+import seaborn as sns
 
 # Генерація синтетичних даних для 200 ресторанів
 np.random.seed(42) # Для відтворюваності
@@ -50,10 +51,36 @@ features_names = ['Price', 'Food Quality', 'Service', 'Location']
 importances = rf_model.feature_importances_
 
 # Створюємо бар-чарт для важливості ознак
-plt.figure(figsize=(10, 6))
-plt.barh(features_names, importances, color='skyblue') # горизонтальний бар-чарт
-plt.title('Feature Importances in Random Forest Classifier')
-plt.xlabel('Importance')
-for i, v in enumerate(importances):
-    plt.text(v + 0.002, i, f"{v:.2f}", color='blue', va='center') # Додаємо текст до важливості
+# plt.figure(figsize=(10, 6))
+# plt.barh(features_names, importances, color='skyblue') # горизонтальний бар-чарт
+# plt.title('Feature Importances in Random Forest Classifier')
+# plt.xlabel('Importance')
+# for i, v in enumerate(importances):
+#     plt.text(v + 0.002, i, f"{v:.2f}", color='blue', va='center') # Додаємо текст до важливості
+# plt.show()
+
+
+# new_restaurant = np.array([[4, 3, 3, 5]])
+# prediction = rf_model.predict(new_restaurant)
+#
+# print(
+#     f"New restaurant with grades {new_restaurant[0]} "
+#     f"predicted as {'good' if prediction[0] == 1 else 'bad'}."
+# )
+
+
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(8, 6))
+sns.heatmap(
+    cm, # дані
+    annot=True, # інверсія
+    fmt='d', # формат
+    cmap='Blues',
+    xticklabels=['Bad', 'Good'],
+    yticklabels=['Good', 'Bad']
+)
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('CF Matrix')
+plt.tight_layout()
 plt.show()
