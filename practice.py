@@ -151,9 +151,6 @@ def visualize_letters(X, y, scaler, num_samples=52):
     fig, axs = plt.subplots(6, 9, figsize=(12, 6))
     fig.suptitle("Dataset Letters Example", fontsize=16)
 
-    print(type(X))
-    print(type(scaler))
-
     X_denorm = scaler.inverse_transform(X)
 
     for i in range(num_samples):
@@ -188,17 +185,22 @@ def show_predictions(model, X_test, y_test_labels, scaler, encoder):
         correct = predictions[idx] == y_test_labels[idx]
         color = 'green' if correct else 'red'
 
-        axs[row, col].set_title(f"True: {y_test_labels[idx]}\nPredicted: {predictions[idx]}", color=color)
+        axs[row, col].text(0.5, -0.25, f"Predicted: {predictions[idx]}",
+                           color=color, ha='center', fontsize=8, transform=axs[row, col].transAxes)
+        axs[row, col].text(0.5, 1.05, f"True: {y_test_labels[idx]}",
+                           color=color, ha='center', fontsize=8, transform=axs[row, col].transAxes)
         axs[row, col].axis('off')
+
+        fig.subplots_adjust(hspace=0.6, wspace=0.4)
 
     plt.show()
 
 def main():
     X_train, X_val, X_test, y_train_onehot, y_val_onehot, y_test_onehot, y_test_labels, scaler, encoder = load_letter_data()
-    visualize_letters(X_train, y_test_labels, scaler)
+    visualize_letters(X_test, y_test_labels, scaler)
 
     input_size = X_train.shape[1]
-    hidden_size = 100
+    hidden_size = 256
     output_size = 52
     learning_rate = 0.01
 
