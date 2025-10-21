@@ -14,10 +14,10 @@ class LetterPerceptron:
         self.output_size = output_size
         self.learning_rate = learning_rate
 
-        self.W1 = np.random.randn(self.input_size, self.hidden_size) * np.sqrt(self.input_size)
+        self.W1 = np.random.randn(self.input_size, self.hidden_size) / np.sqrt(self.input_size)
         self.b1 = np.zeros((1, self.hidden_size))
 
-        self.W2 = np.random.randn(self.hidden_size, self.output_size) * np.sqrt(self.hidden_size)
+        self.W2 = np.random.randn(self.hidden_size, self.output_size) / np.sqrt(self.hidden_size)
         self.b2 = np.zeros((1, self.output_size))
 
         self.loss_history = []
@@ -65,7 +65,7 @@ class LetterPerceptron:
 
         dA1 = np.dot(dZ2, self.W2.T)
         dZ1 = dA1 * self.sigmoid_derivative(self.A1)
-        dW1 = np.dot(X.T, dZ1)
+        dW1 = np.dot(X.T, dZ1) / m
         db1 = np.sum(dZ1, axis=0, keepdims=True) / m
 
         self.W2 -= self.learning_rate * dW2
@@ -200,7 +200,7 @@ def main():
     input_size = X_train.shape[1]
     hidden_size = 100
     output_size = 52
-    learning_rate = 0.1
+    learning_rate = 0.01
 
     model = LetterPerceptron(input_size, hidden_size, output_size, learning_rate)
 
