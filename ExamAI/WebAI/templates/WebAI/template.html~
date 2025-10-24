@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %} {% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'WebAI/css/header.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="main-container">
+    <div class="header-box">
+      <img src="{% static 'WebAI/images/AI-logo.png' %}" alt="logo">
+      <div class="nav-bar">
+        <a href="{% url 'main' %}">Main</a>
+        <a href="">Chat</a>
+        <a href="{% url 'computer-vision' %}">Computer Vision</a>
+      </div>
+    </div>
+    <div class="content-box">
+      {% block content %} {% endblock %}
+    </div>
+  </div>
+</body>
+</html>
