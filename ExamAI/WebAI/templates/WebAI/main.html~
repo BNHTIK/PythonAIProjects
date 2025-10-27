@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="main-page-box">
-    <h2 class="page-title">Home Page About</h2>
+    <h2 class="page-title">About Main Page</h2>
     <p>
     <b>Real-Time Computer Vision</b><br>
     See the world through AI.<br><br>

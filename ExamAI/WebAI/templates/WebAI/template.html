@@ -14,7 +14,7 @@
     <div class="header-box">
       <img src="{% static 'WebAI/images/AI-logo.png' %}" alt="logo">
       <div class="nav-bar">
-        <a href="{% url 'main' %}">Main</a>
+        <a href="{% url 'main' %}">Home</a>
         <a href="{% url 'computer-vision' %}">Computer Vision</a>
       </div>
     </div>
@@ -22,5 +22,6 @@
       {% block content %} {% endblock %}
     </div>
   </div>
+  <script>{% block scripts %}{% endblock %}</script>
 </body>
 </html>
